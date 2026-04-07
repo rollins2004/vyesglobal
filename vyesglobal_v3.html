@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V YES GLOBAL – Your Partner in Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+/* ══════════════════════════════════════════
+   CSS VARIABLES — SINGLE SOURCE OF TRUTH
+══════════════════════════════════════════ */
+:root {
+  --navy-deep:    #020b18;
+  --navy:         #071428;
+  --navy-mid:     #0a1e3a;
+  --navy-light:   #0e2850;
+  --blue:         #1a56db;
+  --blue-bright:  #2563eb;
+  --cyan:         #0ea5e9;
+  --cyan-glow:    rgba(14,165,233,0.18);
+  --emerald:      #22c55e;
+  --emerald-dark: #16a34a;
+  --emerald-glow: rgba(34,197,94,0.15);
+  --gold:         #f0b429;
+  --white:        #ffffff;
+  --text:         #ddeeff;
+  --text-muted:   rgba(220,238,255,0.58);
+  --text-dim:     rgba(220,238,255,0.35);
+  --glass-bg:     rgba(255,255,255,0.042);
+  --glass-bg2:    rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.09);
+  --glass-border2:rgba(34,197,94,0.22);
+  --grad-primary: linear-gradient(135deg, #1a56db 0%, #0ea5e9 45%, #22c55e 100%);
+  --grad-hero:    linear-gradient(135deg, #0a1e3a 0%, #071428 60%, #020b18 100%);
+  --grad-card:    linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(34,197,94,0.03) 100%);
+  --shadow-glow:  0 0 40px rgba(34,197,94,0.12), 0 20px 60px rgba(0,0,0,0.5);
+  --shadow-card:  0 8px 32px rgba(0,0,0,0.35);
+  --radius-card:  24px;
+  --radius-sm:    14px;
+  --transition:   all 0.32s cubic-bezier(0.22,0.61,0.36,1);
+}
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background: var(--navy-deep);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display:block; max-width:100%; }
+::selection { background: rgba(0,198,255,0.3); color:#fff; }
+
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════ */
+#cursor-dot {
+  position:fixed; width:8px; height:8px; border-radius:50%;
+  background: var(--cyan); pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition: width .15s, height .15s, background .2s;
+  box-shadow: 0 0 10px var(--cyan);
+}
+#cursor-ring {
+  position:fixed; width:34px; height:34px; border-radius:50%;
+  border:1.5px solid rgba(0,198,255,0.45); pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition: width .22s ease, height .22s ease, border-color .22s;
+}
+.cursor-hover #cursor-dot  { width:14px; height:14px; background:var(--emerald); box-shadow:0 0 16px var(--emerald); }
+.cursor-hover #cursor-ring { width:52px; height:52px; border-color:rgba(0,229,160,0.5); }
+@media(max-width:768px){ #cursor-dot,#cursor-ring{display:none} body{cursor:auto} }
+
+/* ══════════════════════════════════════════
+   STICKY SOCIAL BAR
+══════════════════════════════════════════ */
+#social-bar {
+  position:fixed; left:18px; bottom:40px; z-index:200;
+  display:flex; flex-direction:column; gap:10px; align-items:center;
+}
+#social-bar::before {
+  content:''; width:1px; height:50px;
+  background: linear-gradient(to bottom, transparent, rgba(0,198,255,0.5));
+  margin-bottom:4px;
+}
+#social-bar::after {
+  content:''; width:1px; height:50px;
+  background: linear-gradient(to bottom, rgba(0,198,255,0.5), transparent);
+  margin-top:4px;
+}
+.soc-btn {
+  width:42px; height:42px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; transition: var(--transition);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(12px);
+  position:relative; cursor:none;
+}
+.soc-btn:hover { transform:scale(1.2) translateX(4px); }
+.soc-wa  { background:rgba(37,211,102,0.12); border-color:rgba(37,211,102,0.3); }
+.soc-wa:hover  { background:rgba(37,211,102,0.25); box-shadow:0 0 20px rgba(37,211,102,0.4); }
+.soc-ig  { background:rgba(225,48,108,0.1); border-color:rgba(225,48,108,0.25); }
+.soc-ig:hover  { background:rgba(225,48,108,0.2); box-shadow:0 0 20px rgba(225,48,108,0.35); }
+.soc-li  { background:rgba(0,119,181,0.12); border-color:rgba(0,119,181,0.3); }
+.soc-li:hover  { background:rgba(0,119,181,0.25); box-shadow:0 0 20px rgba(0,119,181,0.4); }
+.soc-tip {
+  position:absolute; left:54px; white-space:nowrap;
+  background:var(--navy-mid); border:1px solid var(--glass-border2);
+  color:var(--text); font-size:12px; font-weight:500;
+  padding:5px 12px; border-radius:8px; pointer-events:none;
+  opacity:0; transform:translateX(-6px);
+  transition: opacity .2s, transform .2s;
+}
+.soc-btn:hover .soc-tip { opacity:1; transform:translateX(0); }
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+#navbar {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 5%; height:72px;
+  background: rgba(4,13,26,0.82);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-border);
+  transition: background .4s, box-shadow .4s;
+}
+#navbar.scrolled {
+  background: rgba(4,13,26,0.96);
+  box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+}
+.nav-logo {
+  display:flex; align-items:center; gap:11px; flex-shrink:0;
+}
+/* SVG Logo — replaces when real logo placed at assets/logo.png */
+.nav-logo-svg {
+  width:44px; height:44px; border-radius:50%;
+  background: var(--grad-primary);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif; font-weight:800;
+  font-size:17px; color:#fff; letter-spacing:-1px;
+  box-shadow:0 0 20px rgba(0,198,255,0.35);
+  position:relative; overflow:hidden;
+  flex-shrink:0;
+}
+.nav-logo-svg::after {
+  content:''; position:absolute; inset:0;
+  background:conic-gradient(from 0deg,transparent 60%,rgba(255,255,255,0.15) 70%,transparent 80%);
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { to{transform:rotate(360deg)} }
+.nav-logo-img { width:44px; height:44px; border-radius:50%; object-fit:cover; box-shadow:0 0 20px rgba(0,198,255,0.35); display:none; }
+.nav-logo-img.loaded { display:block; }
+.nav-brand { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; letter-spacing:.3px; }
+.nav-brand em {
+  background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  font-style:normal;
+}
+.nav-brand small { display:block; font-family:'Outfit',sans-serif; font-size:10px; font-weight:400; color:var(--text-muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:-2px; }
+.nav-links { display:flex; align-items:center; gap:6px; }
+.nav-links a {
+  color:var(--text-muted); font-size:14px; font-weight:500; padding:8px 14px;
+  border-radius:8px; transition: var(--transition); white-space:nowrap;
+}
+.nav-links a:hover { color:#fff; background:var(--glass-bg2); }
+.nav-cta {
+  padding:10px 24px; border-radius:50px;
+  background:var(--grad-primary); border:none; color:#fff;
+  font-family:'Outfit',sans-serif; font-weight:600; font-size:14px;
+  cursor:none; transition: var(--transition);
+  box-shadow:0 4px 20px rgba(26,79,214,0.4); white-space:nowrap;
+}
+.nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,198,255,0.5); }
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; }
+.hamburger span { width:22px; height:2px; background:var(--text); border-radius:2px; transition:.28s; }
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile nav drawer */
+.mobile-drawer {
+  display:none; position:fixed; inset:0; z-index:150;
+  background:rgba(4,13,26,0.97); backdrop-filter:blur(30px);
+  flex-direction:column; align-items:center; justify-content:center; gap:28px;
+}
+.mobile-drawer.open { display:flex; }
+.mobile-drawer a { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; color:var(--text); transition:.2s; }
+.mobile-drawer a:hover { color:var(--cyan); }
+
+/* ══════════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════════ */
+#hero {
+  position:relative; min-height:100vh;
+  display:grid; grid-template-columns:1fr 1fr;
+  align-items:center; gap:0; padding:100px 5% 60px;
+  overflow:hidden;
+}
+.hero-bg-grad {
+  position:absolute; inset:0; pointer-events:none;
+  background: radial-gradient(ellipse 70% 70% at 70% 50%, rgba(0,198,255,0.04) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 60% at 20% 80%, rgba(0,229,160,0.04) 0%, transparent 70%),
+              var(--grad-hero);
+}
+.hero-left { position:relative; z-index:10; padding-right:20px; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid rgba(0,198,255,0.28); border-radius:50px;
+  padding:7px 18px; font-size:11px; font-weight:600; letter-spacing:2px;
+  text-transform:uppercase; color:var(--cyan); margin-bottom:28px;
+  background:rgba(0,198,255,0.07);
+  animation: revealUp .7s .1s both;
+}
+.eyebrow-pulse { width:6px; height:6px; border-radius:50%; background:var(--emerald); animation:pulse 1.6s infinite; }
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.hero-h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(46px,6.5vw,82px); font-weight:800;
+  line-height:1.02; letter-spacing:-1px;
+  animation: revealUp .7s .18s both;
+  margin-bottom:8px;
+}
+.hero-h1 .line-grad {
+  background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  display:block;
+}
+.hero-h1 .line-white { display:block; color:#fff; }
+.hero-tagline {
+  font-size:clamp(16px,2.2vw,22px); color:var(--text-muted); font-weight:300;
+  letter-spacing:.4px; margin-bottom:10px; animation: revealUp .7s .25s both;
+}
+.hero-tagline strong { color:var(--emerald); font-weight:600; }
+.hero-subtext {
+  font-size:15px; color:var(--text-dim); line-height:1.75;
+  max-width:440px; margin-bottom:40px; animation:revealUp .7s .32s both;
+}
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; animation:revealUp .7s .4s both; margin-bottom:56px; }
+.btn-primary {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:14px 32px; border-radius:50px;
+  background:var(--grad-primary); border:none; color:#fff;
+  font-family:'Outfit',sans-serif; font-weight:600; font-size:15px;
+  cursor:none; transition:var(--transition);
+  box-shadow:0 6px 28px rgba(26,79,214,0.4);
+}
+.btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,198,255,0.5); }
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 30px; border-radius:50px;
+  background:transparent; border:1.5px solid rgba(0,198,255,0.35); color:var(--text);
+  font-family:'Outfit',sans-serif; font-weight:500; font-size:15px;
+  cursor:none; transition:var(--transition);
+}
+.btn-ghost:hover { border-color:var(--cyan); background:rgba(0,198,255,0.07); transform:translateY(-2px); }
+.hero-metrics {
+  display:flex; gap:20px; flex-wrap:wrap; animation:revealUp .7s .5s both;
+}
+.metric {
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px); border-radius:16px; padding:16px 22px;
+  min-width:100px; transition:var(--transition);
+}
+.metric:hover { border-color:var(--glass-border2); transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,198,255,0.1); }
+.metric-val {
+  font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700;
+  background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.metric-key { font-size:11px; color:var(--text-muted); letter-spacing:.8px; text-transform:uppercase; margin-top:3px; }
+
+/* Globe container */
+.hero-right {
+  position:relative; z-index:5; display:flex;
+  align-items:center; justify-content:center;
+  min-height:520px;
+}
+#globe-canvas {
+  width:100%; height:100%; max-width:560px; max-height:560px;
+  position:relative;
+}
+#globe-canvas canvas { border-radius:50%; }
+.globe-wrap {
+  position:relative; width:100%; max-width:520px; aspect-ratio:1/1;
+  margin:0 auto;
+}
+.globe-halo {
+  position:absolute; inset:-20px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,198,255,0.08) 0%, transparent 70%);
+  animation:halopulse 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes halopulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.04)}}
+.globe-ring {
+  position:absolute; inset:-30px; border-radius:50%;
+  border:1px solid rgba(0,198,255,0.12);
+  animation:rotatering 20s linear infinite;
+  pointer-events:none;
+}
+.globe-ring::after {
+  content:''; position:absolute; top:0; left:50%;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--emerald); margin-left:-4px; margin-top:-4px;
+  box-shadow:0 0 14px var(--emerald), 0 0 28px var(--emerald);
+}
+@keyframes rotatering{to{transform:rotate(360deg)}}
+
+/* Node labels (HTML overlays for globe nodes) */
+.node-label {
+  position:absolute; pointer-events:none;
+  background:rgba(7,20,40,0.88); border:1px solid rgba(34,197,94,0.4);
+  backdrop-filter:blur(12px); border-radius:10px;
+  padding:6px 12px; font-size:12px; font-weight:600;
+  color:var(--emerald); white-space:nowrap;
+  transition:opacity .3s;
+  text-transform:uppercase; letter-spacing:.8px;
+  box-shadow:0 4px 20px rgba(34,197,94,0.18);
+}
+
+/* Globe fallback */
+.globe-fallback {
+  display:none; width:100%; aspect-ratio:1/1; border-radius:50%;
+  background: radial-gradient(circle at 30% 35%, rgba(26,79,214,0.5), rgba(0,198,255,0.2) 40%, rgba(0,0,0,0) 70%),
+              conic-gradient(from 0deg, #0a1628, #1a4fd6, #00c6ff, #4caf50, #0a1628);
+  border:1px solid rgba(0,198,255,0.2); box-shadow:0 0 60px rgba(0,198,255,0.2);
+  max-width:460px; margin:0 auto;
+}
+.no-webgl .globe-fallback { display:block; }
+.no-webgl #globe-canvas    { display:none; }
+
+/* ══════════════════════════════════════════
+   SECTION COMMONS
+══════════════════════════════════════════ */
+.section-wrap { padding:110px 5%; max-width:1200px; margin:0 auto; }
+.section-badge {
+  display:inline-block; font-size:11px; font-weight:600; letter-spacing:2px;
+  text-transform:uppercase; color:var(--cyan); margin-bottom:14px;
+}
+.section-title {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(30px,4vw,50px); font-weight:700;
+  line-height:1.1; margin-bottom:14px;
+}
+.section-title .hi { background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.section-desc { font-size:16px; color:var(--text-muted); line-height:1.75; max-width:580px; }
+.section-divider { width:100%; height:1px; background:linear-gradient(to right,transparent,var(--glass-border2),transparent); margin:0; }
+
+/* reveal on scroll */
+.reveal { opacity:0; transform:translateY(36px); transition:opacity .75s ease,transform .75s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+.reveal-l { opacity:0; transform:translateX(-40px); transition:opacity .75s ease,transform .75s ease; }
+.reveal-l.in{ opacity:1; transform:translateX(0); }
+.reveal-r { opacity:0; transform:translateX(40px); transition:opacity .75s ease,transform .75s ease; }
+.reveal-r.in{ opacity:1; transform:translateX(0); }
+
+/* ══════════════════════════════════════════
+   SERVICES
+══════════════════════════════════════════ */
+#services { background:transparent; }
+.srv-header { text-align:center; margin-bottom:70px; }
+.srv-header .section-desc { margin:0 auto; }
+
+/* Grid layout: 2 big + 2 big */
+.srv-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:24px; max-width:1140px; margin:0 auto;
+}
+
+/* GLASS CARD BASE */
+.g-card {
+  background:var(--grad-card);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(28px); -webkit-backdrop-filter:blur(28px);
+  border-radius:var(--radius-card);
+  padding:36px;
+  position:relative; overflow:hidden;
+  transition:var(--transition);
+  animation:floatY 7s ease-in-out infinite;
+}
+.g-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,198,255,0.4),rgba(0,229,160,0.3),transparent);
+}
+.g-card:nth-child(2){animation-delay:-2.5s}
+.g-card:nth-child(3){animation-delay:-4s}
+.g-card:nth-child(4){animation-delay:-1.2s}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.g-card:hover {
+  transform:translateY(-12px) !important;
+  border-color:var(--glass-border2);
+  box-shadow:0 30px 70px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,198,255,0.15), inset 0 0 40px rgba(0,198,255,0.03);
+}
+.g-card::after {
+  content:''; position:absolute; inset:0; border-radius:var(--radius-card); pointer-events:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,198,255,0.04) 0%, transparent 60%);
+  transition:background .2s;
+}
+
+/* Card glow accent */
+.card-glow {
+  position:absolute; width:200px; height:200px; border-radius:50%;
+  filter:blur(60px); pointer-events:none; opacity:.12;
+}
+.glow-cyan   { background:var(--cyan); right:-40px; top:-40px; }
+.glow-green  { background:var(--emerald); left:-40px; bottom:-40px; }
+.glow-blue   { background:var(--blue); right:-20px; bottom:-20px; }
+.glow-gold   { background:var(--gold); left:-20px; top:-20px; }
+
+.card-head {
+  display:flex; align-items:center; gap:14px; margin-bottom:28px;
+}
+.card-icon {
+  width:50px; height:50px; border-radius:14px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:24px;
+  background:var(--glass-bg2); border:1px solid var(--glass-border);
+}
+.card-title { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; }
+.card-sub   { font-size:13px; color:var(--text-muted); margin-top:2px; }
+
+.svc-list { display:flex; flex-direction:column; gap:12px; }
+.svc-item {
+  display:flex; align-items:flex-start; gap:12px; padding:13px 16px;
+  border-radius:12px; background:rgba(255,255,255,0.028); border:1px solid rgba(255,255,255,0.05);
+  transition:background .25s, border-color .25s;
+}
+.svc-item:hover { background:rgba(0,198,255,0.04); border-color:rgba(0,198,255,0.15); }
+.svc-dot {
+  width:7px; height:7px; border-radius:2px; flex-shrink:0; margin-top:6px;
+  background:var(--grad-primary);
+}
+.svc-name  { font-size:14px; font-weight:600; color:#fff; }
+.svc-desc  { font-size:12px; color:var(--text-muted); margin-top:2px; line-height:1.5; }
+
+/* Highlight badge inside card */
+.price-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(0,229,160,0.1); border:1px solid rgba(0,229,160,0.3);
+  border-radius:50px; padding:5px 14px; font-size:13px; font-weight:600;
+  color:var(--emerald); margin-bottom:20px;
+}
+.tool-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:16px; }
+.chip {
+  padding:5px 12px; border-radius:50px; font-size:12px; font-weight:500;
+  background:var(--glass-bg2); border:1px solid var(--glass-border2); color:var(--cyan);
+}
+
+/* Web dev card highlights */
+.web-pillars { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:16px; }
+.pillar {
+  text-align:center; padding:16px 10px; border-radius:14px;
+  background:rgba(255,255,255,0.03); border:1px solid var(--glass-border);
+  transition:var(--transition);
+}
+.pillar:hover { border-color:var(--glass-border2); background:rgba(0,198,255,0.04); }
+.pillar-icon { font-size:22px; margin-bottom:8px; }
+.pillar-label { font-size:12px; font-weight:600; color:var(--text); }
+.pillar-sub   { font-size:11px; color:var(--text-muted); margin-top:3px; line-height:1.4; }
+
+/* ══════════════════════════════════════════
+   WHY US
+══════════════════════════════════════════ */
+#why {
+  background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-deep) 100%);
+  border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border);
+}
+.why-inner { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.why-features { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.why-card {
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px); border-radius:20px; padding:24px;
+  transition:var(--transition);
+}
+.why-card:hover { transform:translateY(-6px); border-color:var(--glass-border2); box-shadow:0 16px 40px rgba(0,198,255,0.08); }
+.why-icon { font-size:26px; margin-bottom:12px; }
+.why-card h4 { font-size:15px; font-weight:600; margin-bottom:6px; }
+.why-card p  { font-size:13px; color:var(--text-muted); line-height:1.65; }
+.why-card.wide { grid-column:1/-1; }
+
+/* VG emblem */
+.vg-emblem-wrap { display:flex; flex-direction:column; align-items:center; gap:28px; }
+.vg-ring-outer {
+  width:220px; height:220px; border-radius:50%; position:relative;
+  background:conic-gradient(from 0deg, #1a4fd6 0%, #00c6ff 35%, #00e5a0 55%, #4caf50 75%, #1a4fd6 100%);
+  animation:spinSlow 12s linear infinite;
+  box-shadow:0 0 70px rgba(0,198,255,0.25);
+}
+.vg-ring-outer::before {
+  content:''; position:absolute; inset:4px; border-radius:50%; background:var(--navy);
+}
+.vg-ring-inner {
+  position:absolute; inset:12px; border-radius:50%; border:1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  background:rgba(10,22,40,0.92);
+}
+.vg-letters {
+  font-family:'Cormorant Garamond',serif; font-size:58px; font-weight:800; line-height:1;
+  background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.vg-tagword { font-size:9px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-muted); margin-top:4px; }
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+/* Team cards */
+.team-cards { display:flex; flex-direction:column; gap:14px; width:100%; }
+.team-card {
+  display:flex; align-items:center; gap:16px;
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  border-radius:16px; padding:18px 20px;
+  transition:var(--transition);
+}
+.team-card:hover { border-color:var(--glass-border2); transform:translateX(8px); }
+.team-av {
+  width:46px; height:46px; border-radius:14px; flex-shrink:0;
+  background:var(--grad-primary); display:flex; align-items:center; justify-content:center;
+  font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; color:#fff;
+}
+.team-name  { font-size:16px; font-weight:600; }
+.team-role  { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.team-phone { margin-left:auto; }
+.team-phone a {
+  display:inline-flex; align-items:center; gap:6px; padding:7px 14px;
+  border-radius:8px; background:rgba(0,229,160,0.1); border:1px solid rgba(0,229,160,0.25);
+  font-size:13px; font-weight:600; color:var(--emerald); transition:.2s; cursor:none;
+}
+.team-phone a:hover { background:rgba(0,229,160,0.18); }
+
+/* ══════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════ */
+#contact { background:var(--navy-deep); }
+.contact-layout { display:grid; grid-template-columns:1fr 1.2fr; gap:60px; align-items:start; }
+.contact-info-side { display:flex; flex-direction:column; gap:14px; }
+.c-card {
+  display:flex; align-items:center; gap:16px;
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px); border-radius:18px; padding:20px 22px;
+  transition:var(--transition);
+}
+.c-card:hover { border-color:var(--glass-border2); transform:translateX(6px); box-shadow:0 8px 32px rgba(0,198,255,0.06); }
+.c-icon {
+  width:50px; height:50px; border-radius:14px; flex-shrink:0;
+  background:var(--grad-primary); display:flex; align-items:center; justify-content:center; font-size:22px;
+  box-shadow:0 4px 16px rgba(26,79,214,0.3);
+}
+.c-label { font-size:12px; color:var(--text-muted); font-weight:500; margin-bottom:4px; }
+.c-value { font-size:16px; font-weight:600; color:#fff; }
+.c-value a { color:inherit; }
+.c-value a:hover { color:var(--cyan); }
+
+.contact-form-card {
+  background:var(--grad-card); border:1px solid var(--glass-border);
+  backdrop-filter:blur(28px); border-radius:var(--radius-card); padding:40px;
+  position:relative; overflow:hidden;
+}
+.contact-form-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,198,255,0.4),transparent);
+}
+.form-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; margin-bottom:6px; }
+.form-title span { background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.form-sub { font-size:14px; color:var(--text-muted); margin-bottom:28px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.f-group { margin-bottom:16px; }
+.f-group label { display:block; font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:8px; letter-spacing:.5px; text-transform:uppercase; }
+.f-group input,
+.f-group select,
+.f-group textarea {
+  width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--glass-border);
+  border-radius:12px; padding:13px 16px; color:#fff;
+  font-family:'Outfit',sans-serif; font-size:14px; outline:none;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+  -webkit-appearance:none;
+}
+.f-group input::placeholder,
+.f-group textarea::placeholder { color:var(--text-dim); }
+.f-group input:focus,
+.f-group select:focus,
+.f-group textarea:focus {
+  border-color:rgba(0,198,255,0.5);
+  background:rgba(0,198,255,0.04);
+  box-shadow:0 0 0 3px rgba(0,198,255,0.08);
+}
+.f-group select option { background:#0d1f3c; color:#fff; }
+.f-group textarea { resize:vertical; min-height:96px; }
+.wa-btn {
+  width:100%; padding:16px; border-radius:14px;
+  background:linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  border:none; color:#fff;
+  font-family:'Outfit',sans-serif; font-weight:700; font-size:16px;
+  cursor:none; transition:var(--transition);
+  box-shadow:0 6px 28px rgba(37,211,102,0.3);
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.wa-btn:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(37,211,102,0.45); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+.footer-grad-line { height:2px; background:var(--grad-primary); }
+footer {
+  background:#020810; padding:48px 5% 32px;
+}
+.footer-inner { max-width:1140px; margin:0 auto; }
+.footer-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  flex-wrap:wrap; gap:32px; margin-bottom:40px;
+}
+.footer-brand .f-logo { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:700; margin-bottom:8px; }
+.footer-brand .f-logo span { background:var(--grad-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.footer-brand p { font-size:13px; color:var(--text-muted); max-width:240px; line-height:1.7; }
+.footer-links h5 { font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--cyan); margin-bottom:14px; }
+.footer-links ul { display:flex; flex-direction:column; gap:9px; }
+.footer-links ul li a { font-size:14px; color:var(--text-muted); transition:.2s; }
+.footer-links ul li a:hover { color:#fff; padding-left:4px; }
+.footer-divider { height:1px; background:var(--glass-border); margin-bottom:24px; }
+.footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13px; color:var(--text-dim); }
+
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+@keyframes revealUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1024px){
+  #hero { grid-template-columns:1fr; min-height:auto; padding-top:110px; }
+  .hero-right { min-height:360px; margin-top:20px; }
+  .globe-wrap { max-width:360px; }
+  .hero-left { padding-right:0; }
+  .why-inner { grid-template-columns:1fr; gap:48px; }
+  .vg-emblem-wrap { order:-1; }
+  .contact-layout { grid-template-columns:1fr; }
+}
+@media(max-width:768px){
+  .srv-grid { grid-template-columns:1fr; }
+  .web-pillars { grid-template-columns:1fr; }
+  .why-features { grid-template-columns:1fr; }
+  .nav-links,.nav-cta { display:none; }
+  .hamburger { display:flex; }
+  .hero-right { min-height:300px; }
+  .globe-wrap { max-width:290px; }
+  .section-wrap { padding:80px 5%; }
+  .form-row { grid-template-columns:1fr; }
+  .footer-top { flex-direction:column; gap:24px; }
+  #social-bar { left:10px; bottom:30px; }
+  .globe-ring { display:none; }
+}
+@media(max-width:480px){
+  .hero-metrics { gap:10px; }
+  .metric { padding:12px 16px; }
+  .metric-val { font-size:22px; }
+  .g-card { padding:24px; }
+  .contact-form-card { padding:26px; }
+  .hero-right { min-height:240px; }
+  .globe-wrap { max-width:240px; }
+  .g-card { animation:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ CUSTOM CURSOR ══ -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══ STICKY SOCIAL BAR ══ -->
+<aside id="social-bar">
+  <a class="soc-btn soc-wa" href="https://wa.me/918147421957" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.549 4.099 1.508 5.831L.057 23.25a.75.75 0 00.916.938l5.543-1.452A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 01-4.956-1.356l-.355-.212-3.688.968.984-3.594-.232-.372A9.713 9.713 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z" fill="currentColor" style="color:#25d366"/></svg>
+    <span class="soc-tip">WhatsApp Us</span>
+  </a>
+  <a class="soc-btn soc-ig" href="https://instagram.com/vyes_global" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="#e1306c" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="#e1306c" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.25" fill="#e1306c"/></svg>
+    <span class="soc-tip">@vyes_global</span>
+  </a>
+  <a class="soc-btn soc-li" href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="#0077b5" stroke-width="2"/><path d="M7 10v7M7 7v.5" stroke="#0077b5" stroke-width="2" stroke-linecap="round"/><path d="M11 17v-3.5C11 12 12 11 13.5 11S16 12 16 13.5V17M11 10v1" stroke="#0077b5" stroke-width="2" stroke-linecap="round"/></svg>
+    <span class="soc-tip">LinkedIn</span>
+  </a>
+</aside>
+
+<!-- ══ NAVIGATION ══ -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <!-- Real logo: drop any image into images/ folder — auto-detected -->
+    <img class="nav-logo-img" src="images/logo.jpg" alt="V YES GLOBAL" id="navLogoImg">
+    <div class="nav-logo-svg" id="navLogoSvg">VG</div>
+    <div class="nav-brand">
+      <em>V YES GLOBAL</em>
+      <small>Your Partner in Growth</small>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#services">Services</a>
+    <a href="#why">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-cta" onclick="smoothTo('#contact')">Get Free Consultation</button>
+  <div class="hamburger" id="ham"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="drawer">
+  <a href="#hero"     onclick="closeDrawer()">Home</a>
+  <a href="#services" onclick="closeDrawer()">Services</a>
+  <a href="#why"      onclick="closeDrawer()">About</a>
+  <a href="#contact"  onclick="closeDrawer()">Contact</a>
+  <button class="btn-primary" onclick="closeDrawer();smoothTo('#contact')">Get Free Consultation</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg-grad"></div>
+
+  <!-- LEFT CONTENT -->
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="eyebrow-pulse"></span>
+      Trusted Financial Partner
+    </div>
+
+    <h1 class="hero-h1">
+      <span class="line-white">V YES</span>
+      <span class="line-grad">GLOBAL</span>
+    </h1>
+
+    <p class="hero-tagline">Your <strong>Partner in Growth</strong></p>
+    <p class="hero-subtext">
+      Trusted financial solutions — from personal loans to corporate insurance, professional logo design and scalable web development. One partner for all your growth ambitions.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Explore Services
+      </a>
+      <a href="tel:+918147421957" class="btn-ghost">📞 Call Now</a>
+    </div>
+
+    <div class="hero-metrics">
+      <div class="metric"><div class="metric-val">10+</div><div class="metric-key">Loan Types</div></div>
+      <div class="metric"><div class="metric-val">5+</div><div class="metric-key">Insurance Plans</div></div>
+      <div class="metric"><div class="metric-val">₹999</div><div class="metric-key">Logo Design</div></div>
+      <div class="metric"><div class="metric-val">100%</div><div class="metric-key">Transparent</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT — 3D GLOBE -->
+  <div class="hero-right">
+    <div class="globe-wrap">
+      <div class="globe-halo"></div>
+      <div class="globe-ring"></div>
+      <div id="globe-canvas" style="position:relative;">
+        <!-- Video earth overlay: drop earth.mp4/webm into videos/ folder — auto-detected -->
+        <video id="globe-video"
+          autoplay loop muted playsinline
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;z-index:1;pointer-events:none;">
+        </video>
+      </div>
+      <div class="globe-fallback" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section id="services">
+  <div class="section-wrap">
+    <div class="srv-header reveal">
+      <p class="section-badge">What We Offer</p>
+      <h2 class="section-title">Comprehensive <span class="hi">Financial &amp; Digital</span> Services</h2>
+      <p class="section-desc">From fast loan approvals to brand-defining design — we are your single trusted partner for personal, business and digital growth.</p>
+    </div>
+
+    <div class="srv-grid">
+
+      <!-- ── LOAN SOLUTIONS ── -->
+      <div class="g-card reveal-l">
+        <div class="card-glow glow-cyan"></div>
+        <div class="card-head">
+          <div class="card-icon">🏦</div>
+          <div>
+            <div class="card-title">Loan Solutions</div>
+            <div class="card-sub">Fast approvals · Best rates</div>
+          </div>
+        </div>
+        <ul class="svc-list">
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Personal Loans</div><div class="svc-desc">Salaried &amp; Self-Employed — Income ₹15,000+</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Home Loans</div><div class="svc-desc">Best rates from leading Banks &amp; HFCs</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Loan Against Property (LAP)</div><div class="svc-desc">Residential &amp; Commercial</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Business Loans</div><div class="svc-desc">Working Capital &amp; Business Expansion</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Overdraft (OD)</div><div class="svc-desc">Pay interest only on utilized amount</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Auto &amp; Two-Wheeler Loans</div><div class="svc-desc">New &amp; Pre-owned vehicles</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">School Funding &amp; Gold Loans</div><div class="svc-desc">Education finance &amp; gold-backed credit</div></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ── INSURANCE SOLUTIONS ── -->
+      <div class="g-card reveal-r">
+        <div class="card-glow glow-green"></div>
+        <div class="card-head">
+          <div class="card-icon">🛡️</div>
+          <div>
+            <div class="card-title">Insurance Solutions</div>
+            <div class="card-sub">Comprehensive coverage for life &amp; assets</div>
+          </div>
+        </div>
+        <ul class="svc-list">
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Life Insurance</div><div class="svc-desc">Term plans &amp; investment-linked policies</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Health Insurance</div><div class="svc-desc">Medical &amp; critical illness cover</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Motor Insurance</div><div class="svc-desc">Vehicle &amp; accident protection</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Building &amp; Fire Insurance</div><div class="svc-desc">Property &amp; asset coverage</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Group Insurance</div><div class="svc-desc">Employee &amp; corporate plan solutions</div></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ── LOGO DESIGN ── -->
+      <div class="g-card reveal-l">
+        <div class="card-glow glow-gold"></div>
+        <div class="card-head">
+          <div class="card-icon">🎨</div>
+          <div>
+            <div class="card-title">Logo &amp; Brand Design</div>
+            <div class="card-sub">Professional identity creation</div>
+          </div>
+        </div>
+        <div class="price-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Starting from ₹999 only
+        </div>
+        <ul class="svc-list">
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Custom Logo Design</div><div class="svc-desc">Unique concepts tailored to your brand identity</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Brand Identity Kits</div><div class="svc-desc">Color palette, typography &amp; usage guidelines</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Marketing Collateral</div><div class="svc-desc">Business cards, banners, social media creatives</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Revisions Included</div><div class="svc-desc">Multiple revision rounds until you're 100% satisfied</div></div>
+          </li>
+        </ul>
+        <div class="tool-chips">
+          <span class="chip">Adobe Photoshop</span>
+          <span class="chip">Adobe Illustrator</span>
+          <span class="chip">Vector Art</span>
+        </div>
+      </div>
+
+      <!-- ── WEB DEVELOPMENT ── -->
+      <div class="g-card reveal-r">
+        <div class="card-glow glow-blue"></div>
+        <div class="card-head">
+          <div class="card-icon">💻</div>
+          <div>
+            <div class="card-title">Web Development</div>
+            <div class="card-sub">Digital presence that drives growth</div>
+          </div>
+        </div>
+        <div class="web-pillars">
+          <div class="pillar">
+            <div class="pillar-icon">🎯</div>
+            <div class="pillar-label">Strategic Vision</div>
+            <div class="pillar-sub">Goal-aligned websites built to convert</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">⚙️</div>
+            <div class="pillar-label">Scalable Solutions</div>
+            <div class="pillar-sub">Architecture that grows with your business</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🌐</div>
+            <div class="pillar-label">Digital Excellence</div>
+            <div class="pillar-sub">Premium UX that elevates your brand globally</div>
+          </div>
+        </div>
+        <ul class="svc-list" style="margin-top:16px">
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Business &amp; Portfolio Websites</div><div class="svc-desc">Responsive, fast-loading, SEO-ready</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">E-Commerce Platforms</div><div class="svc-desc">End-to-end online store setup &amp; management</div></div>
+          </li>
+          <li class="svc-item">
+            <div class="svc-dot"></div>
+            <div><div class="svc-name">Landing Pages &amp; Funnels</div><div class="svc-desc">High-converting pages for campaigns</div></div>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- /srv-grid -->
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════
+     WHY US
+════════════════════════════════════════ -->
+<section id="why">
+  <div class="section-wrap">
+    <div class="why-inner">
+
+      <div>
+        <p class="section-badge reveal">Why Choose Us</p>
+        <h2 class="section-title reveal">Why <span class="hi">Partner</span> With V YES GLOBAL?</h2>
+        <p class="section-desc reveal" style="margin-bottom:36px">We combine financial expertise, creative talent and digital know-how — delivering results that accelerate your personal and business growth.</p>
+
+        <div class="why-features">
+          <div class="why-card reveal"><div class="why-icon">⭐</div><h4>Premium Services</h4><p>Top-tier financial guidance and creative solutions for every client.</p></div>
+          <div class="why-card reveal"><div class="why-icon">⚡</div><h4>Fast Approvals</h4><p>Streamlined processes for rapid loan and insurance approvals.</p></div>
+          <div class="why-card reveal"><div class="why-icon">📋</div><h4>Minimal Documents</h4><p>Simple paperwork, zero unnecessary hassle from start to finish.</p></div>
+          <div class="why-card reveal"><div class="why-icon">🔍</div><h4>Transparent Process</h4><p>No hidden charges — clear terms at every single step.</p></div>
+          <div class="why-card wide reveal"><div class="why-icon">🤝</div><h4>End-to-End Assistance</h4><p>From application to disbursal, from concept to launch — we're with you every step of the way, ensuring peace of mind at every milestone.</p></div>
+        </div>
+
+        <!-- Team -->
+        <div class="team-cards" style="margin-top:28px">
+          <div class="team-card reveal">
+            <div class="team-av">S</div>
+            <div><div class="team-name">Srikanth VS</div><div class="team-role">Financial Advisor &amp; Co-Founder</div></div>
+            <div class="team-phone"><a href="tel:+918147421957">📞 8147421957</a></div>
+          </div>
+          <div class="team-card reveal">
+            <div class="team-av">D</div>
+            <div><div class="team-name">Dileep</div><div class="team-role">Business Development Lead</div></div>
+            <div class="team-phone"><a href="tel:+918147421957">📞 Contact Us</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emblem -->
+      <div class="vg-emblem-wrap reveal-r">
+        <div class="vg-ring-outer">
+          <div class="vg-ring-inner">
+            <div class="vg-letters">VG</div>
+            <div class="vg-tagword">V Yes Global</div>
+          </div>
+        </div>
+        <p style="text-align:center;color:var(--text-muted);font-size:14px;max-width:260px;line-height:1.75">
+          Empowering individuals &amp; businesses with trusted financial, creative, and digital solutions.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<section id="contact">
+  <div class="section-wrap">
+    <div style="text-align:center;margin-bottom:60px">
+      <p class="section-badge reveal">Get In Touch</p>
+      <h2 class="section-title reveal">Start Your <span class="hi">Growth Journey</span> Today</h2>
+      <p class="section-desc reveal" style="margin:0 auto">Fill the form below — our team will send you a WhatsApp response within minutes.</p>
+    </div>
+
+    <div class="contact-layout">
+      <div class="contact-info-side">
+        <div class="c-card reveal">
+          <div class="c-icon">👤</div>
+          <div><div class="c-label">Financial Advisor</div><div class="c-value">Srikanth VS</div></div>
+        </div>
+        <div class="c-card reveal">
+          <div class="c-icon">📞</div>
+          <div><div class="c-label">Call / WhatsApp</div><div class="c-value"><a href="tel:+918147421957">+91 81474 21957</a></div></div>
+        </div>
+        <div class="c-card reveal">
+          <div class="c-icon">👤</div>
+          <div><div class="c-label">Business Development</div><div class="c-value">Dileep</div></div>
+        </div>
+        <div class="c-card reveal">
+          <div class="c-icon">📍</div>
+          <div><div class="c-label">Serving</div><div class="c-value">Bengaluru &amp; Pan India</div></div>
+        </div>
+        <div class="c-card reveal">
+          <div class="c-icon">📸</div>
+          <div><div class="c-label">Instagram</div><div class="c-value"><a href="https://instagram.com/vyes_global" target="_blank">@vyes_global</a></div></div>
+        </div>
+        <a href="https://wa.me/918147421957" target="_blank" class="btn-primary" style="justify-content:center;margin-top:8px">
+          💬 Open WhatsApp Directly
+        </a>
+        <a href="tel:+918147421957" class="btn-ghost" style="justify-content:center">
+          📞 Call Srikanth VS
+        </a>
+      </div>
+
+      <!-- FORM -->
+      <div class="contact-form-card reveal-r">
+        <div class="form-title">Send a <span>WhatsApp Request</span></div>
+        <div class="form-sub">We'll reply instantly on WhatsApp — no waiting, no bots.</div>
+
+        <div class="form-row">
+          <div class="f-group">
+            <label>Your Full Name *</label>
+            <input type="text" id="f-name" placeholder="e.g. Rahul Sharma" required>
+          </div>
+          <div class="f-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="f-phone" placeholder="+91 XXXXXXXXXX" required>
+          </div>
+        </div>
+
+        <div class="f-group">
+          <label>Service You Need *</label>
+          <select id="f-service">
+            <option value="">— Select a service —</option>
+            <optgroup label="💰 Loan Solutions">
+              <option>Personal Loan (Salaried &amp; Self-Employed, ₹15,000+)</option>
+              <option>Home Loan</option>
+              <option>Loan Against Property (LAP)</option>
+              <option>Business Loan</option>
+              <option>Overdraft (OD)</option>
+              <option>Auto Loan</option>
+              <option>Two-Wheeler Loan</option>
+              <option>School Funding / Gold Loan</option>
+            </optgroup>
+            <optgroup label="🛡️ Insurance Solutions">
+              <option>Life Insurance</option>
+              <option>Health Insurance</option>
+              <option>Motor Insurance</option>
+              <option>Building &amp; Fire Insurance</option>
+              <option>Group Insurance</option>
+            </optgroup>
+            <optgroup label="🎨 Design &amp; Digital">
+              <option>Logo Design (Starting ₹999)</option>
+              <option>Web Development</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="f-group">
+          <label>Additional Details</label>
+          <textarea id="f-msg" placeholder="Tell us your requirement, income, loan amount, etc…"></textarea>
+        </div>
+
+        <button class="wa-btn" onclick="sendToWhatsApp()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.115.549 4.099 1.508 5.831L.057 23.25a.75.75 0 00.916.938l5.543-1.452A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+          Send via WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<div class="footer-grad-line"></div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="f-logo"><span>V YES GLOBAL</span></div>
+        <p>Your trusted partner for financial solutions, brand design and digital growth.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Loan Solutions</a></li>
+          <li><a href="#services">Insurance Solutions</a></li>
+          <li><a href="#services">Logo Design</a></li>
+          <li><a href="#services">Web Development</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="tel:+918147421957">📞 8147421957</a></li>
+          <li><a href="https://wa.me/918147421957" target="_blank">💬 WhatsApp</a></li>
+          <li><a href="https://instagram.com/vyes_global" target="_blank">📸 @vyes_global</a></li>
+          <li><a href="#contact">📩 Request Callback</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <span>© 2026 V YES GLOBAL. All rights reserved.</span>
+      <span>Trusted Financial Solutions for Personal &amp; Business Growth</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ── Logo auto-detect from images/ folder ── */
+(function(){
+  const img = document.getElementById('navLogoImg');
+  const svg = document.getElementById('navLogoSvg');
+  const LOGO_PATHS = [
+    'images/logo.jpg','images/logo.png','images/logo.webp',
+    'images/logo.jpeg','images/logo.svg'
+  ];
+  let idx = 0;
+  function tryNext(){
+    if(idx >= LOGO_PATHS.length){ img.style.display='none'; svg.style.display='flex'; return; }
+    img.src = LOGO_PATHS[idx++];
+  }
+  img.onload  = ()=>{ img.classList.add('loaded'); svg.style.display='none'; };
+  img.onerror = tryNext;
+  tryNext();
+})();
+
+/* ── Cursor ── */
+(function(){
+  if(window.matchMedia('(pointer:coarse)').matches) return;
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let rx=0,ry=0, ax=0,ay=0;
+  document.addEventListener('mousemove',e=>{
+    ax=e.clientX; ay=e.clientY;
+    dot.style.left=ax+'px'; dot.style.top=ay+'px';
+  });
+  (function lerp(){
+    rx+=(ax-rx)*.13; ry+=(ay-ry)*.13;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(lerp);
+  })();
+  document.querySelectorAll('a,button,.g-card,.why-card,.c-card,.metric,.soc-btn').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+  });
+})();
+
+/* ── Navbar scroll ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+},{ passive:true });
+
+/* ── Hamburger ── */
+const ham    = document.getElementById('ham');
+const drawer = document.getElementById('drawer');
+ham.addEventListener('click',()=>{
+  ham.classList.toggle('open');
+  drawer.classList.toggle('open');
+});
+function closeDrawer(){ ham.classList.remove('open'); drawer.classList.remove('open'); }
+function smoothTo(sel){ document.querySelector(sel).scrollIntoView({behavior:'smooth'}); }
+
+/* ── Scroll Reveal ── */
+(function(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  },{threshold:.1});
+  document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+})();
+
+/* ── Card mouse glow ── */
+document.querySelectorAll('.g-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+
+/* ── WhatsApp Smart Form ── */
+function sendToWhatsApp(){
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const service = document.getElementById('f-service').value;
+  const msg     = document.getElementById('f-msg').value.trim();
+
+  if(!name)    { alert('Please enter your name.'); return; }
+  if(!phone)   { alert('Please enter your phone number.'); return; }
+  if(!service) { alert('Please select a service.'); return; }
+
+  const text = [
+    `👋 *Hello V YES GLOBAL!*`,
+    ``,
+    `📌 *New Enquiry from Website*`,
+    ``,
+    `👤 *Name:* ${name}`,
+    `📱 *Phone:* ${phone}`,
+    `🛠️ *Service:* ${service}`,
+    msg ? `📝 *Details:* ${msg}` : '',
+    ``,
+    `_Sent via V YES GLOBAL Website_`
+  ].filter(Boolean).join('\n');
+
+  const url = `https://wa.me/918147421957?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank', 'noopener');
+}
+
+/* ══════════════════════════════════════
+   THREE.JS — REALISTIC HOLOGRAPHIC EARTH GLOBE
+══════════════════════════════════════ */
+(function(){
+
+  /* ── VIDEO EARTH AUTO-DETECT ──────────────────────────────────
+     Drop any earth video into the videos/ folder.
+     Supported names: earth.mp4, earth.webm, earth.mov, earth.ogg, globe.mp4, globe.webm
+     When detected: video shows as the earth sphere; Three.js particles,
+     orbit rings and service nodes all continue floating on top (canvas is transparent).
+     When NOT detected: normal Three.js textured earth plays as usual.
+  ─────────────────────────────────────────────────────────────── */
+  const VIDEO_PATHS = [
+    'videos/earth.mp4','videos/earth.webm','videos/earth.mov','videos/earth.ogg',
+    'videos/globe.mp4','videos/globe.webm','videos/earth.mp4'
+  ];
+  const globeVideo = document.getElementById('globe-video');
+  let videoEarthActive = false;
+  let earthMeshRef = null;
+  let cloudsMeshRef = null;
+
+  (function tryVideoPath(paths){
+    if(!paths.length) return;
+    const [src, ...rest] = paths;
+    globeVideo.src = src;
+    globeVideo.load();
+    const onOk = function(){
+      globeVideo.removeEventListener('canplay', onOk);
+      globeVideo.removeEventListener('loadeddata', onOk);
+      globeVideo.style.display = 'block';
+      globeVideo.play().catch(()=>{});
+      videoEarthActive = true;
+      /* Hide Three.js earth + clouds; keep all particles/nodes/rings */
+      if(earthMeshRef)  earthMeshRef.visible  = false;
+      if(cloudsMeshRef) cloudsMeshRef.visible = false;
+    };
+    const onErr = function(){ globeVideo.removeEventListener('error', onErr); tryVideoPath(rest); };
+    globeVideo.addEventListener('canplay',   onOk, {once:true});
+    globeVideo.addEventListener('loadeddata',onOk, {once:true});
+    globeVideo.addEventListener('error',     onErr,{once:true});
+  })(VIDEO_PATHS);
+
+  /* Sync video size to canvas so it stays perfectly circular */
+  function syncVideoSize(){
+    const canvas = document.querySelector('#globe-canvas canvas');
+    if(canvas && videoEarthActive){
+      globeVideo.style.width  = canvas.offsetWidth  + 'px';
+      globeVideo.style.height = canvas.offsetHeight + 'px';
+    }
+  }
+  window.addEventListener('resize', syncVideoSize, {passive:true});
+  setTimeout(syncVideoSize, 500);
+  /* ─────────────────────────────────────────────────────────── */
+  function hasWebGL(){
+    try{
+      const c=document.createElement('canvas');
+      return !!(c.getContext('webgl')||c.getContext('experimental-webgl'));
+    }catch(e){return false;}
+  }
+  if(!hasWebGL()){ document.body.classList.add('no-webgl'); return; }
+
+  const container = document.getElementById('globe-canvas');
+  const isMobile  = window.innerWidth < 768;
+  const W = container.clientWidth  || 480;
+  const H = container.clientHeight || 480;
+  const SIZE = Math.min(W, H, isMobile ? 300 : 500);
+
+  /* ── Renderer ── */
+  const renderer = new THREE.WebGLRenderer({ antialias:!isMobile, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile?1.5:2));
+  renderer.setSize(SIZE, SIZE);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+  renderer.domElement.style.borderRadius = '50%';
+  renderer.domElement.style.position = 'relative';
+  renderer.domElement.style.zIndex = '2';
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+  camera.position.set(0, 0.1, 3.4);
+  
+  /* ── LIGHTS ── */
+  const ambientLight = new THREE.AmbientLight(0x222222);
+  scene.add(ambientLight);
+  const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  mainLight.position.set(1, 1.5, 1);
+  scene.add(mainLight);
+  const backLight = new THREE.PointLight(0x2266ff, 0.5);
+  backLight.position.set(-0.8, 0.5, -1.2);
+  scene.add(backLight);
+  const fillLight = new THREE.PointLight(0x44aaff, 0.4);
+  fillLight.position.set(1.2, 0.8, 1.5);
+  scene.add(fillLight);
+  
+  const globeGroup = new THREE.Group();
+  scene.add(globeGroup);
+
+  /* ── REALISTIC EARTH TEXTURES ── */
+  // Using high-res NASA-style textures
+  const textureLoader = new THREE.TextureLoader();
+  
+  // Earth color map (land, oceans)
+  const earthMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+  // Earth specular map (shininess)
+  const earthSpecularMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+  // Earth normal map (bump effect)
+  const earthNormalMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+  // Cloud layer texture
+  const cloudMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+  
+  /* ── EARTH CORE ── */
+  const earthGeometry = new THREE.SphereGeometry(1.0, 128, 128);
+  const earthMaterial = new THREE.MeshPhongMaterial({
+    map: earthMap,
+    specularMap: earthSpecularMap,
+    specular: new THREE.Color('grey'),
+    shininess: 5,
+    normalMap: earthNormalMap,
+    normalScale: new THREE.Vector2(0.8, 0.8)
+  });
+  const earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+  globeGroup.add(earthMesh);
+  earthMeshRef = earthMesh;
+  
+  /* ── CLOUDS LAYER (floating above earth) ── */
+  const cloudGeometry = new THREE.SphereGeometry(1.01, 128, 128);
+  const cloudMaterial = new THREE.MeshPhongMaterial({
+    map: cloudMap,
+    transparent: true,
+    opacity: 0.12,
+    blending: THREE.AdditiveBlending
+  });
+  const cloudsMesh = new THREE.Mesh(cloudGeometry, cloudMaterial);
+  globeGroup.add(cloudsMesh);
+  cloudsMeshRef = cloudsMesh;
+  
+  /* ── HOLOGRAM ATMOSPHERE GLOW (outer aura) ── */
+  const atmGeometry = new THREE.SphereGeometry(1.12, 64, 64);
+  const atmMaterial = new THREE.MeshBasicMaterial({
+    color: 0x1a56db,
+    transparent: true,
+    opacity: 0.09,
+    side: THREE.BackSide,
+    blending: THREE.AdditiveBlending
+  });
+  const atmosphere = new THREE.Mesh(atmGeometry, atmMaterial);
+  globeGroup.add(atmosphere);
+  
+  /* ── SECOND GLOW LAYER (cyan holographic effect) ── */
+  const glowGeometry = new THREE.SphereGeometry(1.18, 48, 48);
+  const glowMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00c6ff,
+    transparent: true,
+    opacity: 0.04,
+    side: THREE.BackSide,
+    blending: THREE.AdditiveBlending
+  });
+  const outerGlow = new THREE.Mesh(glowGeometry, glowMaterial);
+  globeGroup.add(outerGlow);
+  
+  /* ── SPARKLING PARTICLES AROUND EARTH (hologram dots) ── */
+  const starCount = 1800;
+  const starGeo = new THREE.BufferGeometry();
+  const starPositions = [];
+  for (let i = 0; i < starCount; i++) {
+    const rad = 1.18 + Math.random() * 0.25;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    starPositions.push(
+      rad * Math.sin(phi) * Math.cos(theta),
+      rad * Math.sin(phi) * Math.sin(theta),
+      rad * Math.cos(phi)
+    );
+  }
+  starGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starPositions), 3));
+  const starMat = new THREE.PointsMaterial({ 
+    color: 0x88ccff, 
+    size: 0.004, 
+    transparent: true, 
+    opacity: 0.6,
+    blending: THREE.AdditiveBlending 
+  });
+  const stars = new THREE.Points(starGeo, starMat);
+  globeGroup.add(stars);
+  
+  /* ── ORBIT NODES (Services floating around) ── */
+  const NODE_DEFS = [
+    { label:'Loans',     icon:'🏦', angle:0,            section:'#services', color:0x1a56db },
+    { label:'Insurance', icon:'🛡️', angle:Math.PI/2,    section:'#services', color:0x22c55e },
+    { label:'Design',    icon:'🎨', angle:Math.PI,      section:'#services', color:0x0ea5e9 },
+    { label:'Web Dev',   icon:'💻', angle:3*Math.PI/2,  section:'#services', color:0x16a34a },
+  ];
+
+  const ORBIT_R = 1.62;
+  const ORBIT_TILT = 0.35;
+
+  const nodeGroup = new THREE.Group();
+  scene.add(nodeGroup);
+
+  const nodeMeshes = [];
+  NODE_DEFS.forEach(def=>{
+    const geo = new THREE.SphereGeometry(0.058, 16, 16);
+    const mat = new THREE.MeshStandardMaterial({
+      color:def.color, 
+      emissive: def.color, 
+      emissiveIntensity: 0.5,
+      roughness: 0.2,
+      metalness: 0.7
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    
+    // Glow ring around node
+    const ringGeo = new THREE.RingGeometry(0.075, 0.11, 24);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color:def.color, 
+      transparent: true, 
+      opacity: 0.5, 
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    mesh.add(ring);
+    
+    mesh.userData = { ...def, baseAngle:def.angle };
+    nodeGroup.add(mesh);
+    nodeMeshes.push(mesh);
+  });
+  
+  /* ── ORBIT LINE (path for nodes) ── */
+  const orbitPoints = [];
+  const segments = 100;
+  for (let i = 0; i <= segments; i++) {
+    const angle = (i / segments) * Math.PI * 2;
+    const x = ORBIT_R * Math.cos(angle);
+    const y = ORBIT_R * Math.sin(angle) * Math.sin(ORBIT_TILT);
+    const z = ORBIT_R * Math.sin(angle) * Math.cos(ORBIT_TILT);
+    orbitPoints.push(new THREE.Vector3(x, y, z));
+  }
+  const orbitGeo = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+  const orbitMat = new THREE.LineBasicMaterial({ color: 0x1a56db, transparent: true, opacity: 0.35 });
+  const orbitRing = new THREE.LineLoop(orbitGeo, orbitMat);
+  scene.add(orbitRing);
+  
+  /* ── DECORATIVE OUTER RING ── */
+  const outerRingPoints = [];
+  for (let i = 0; i <= segments; i++) {
+    const angle = (i / segments) * Math.PI * 2;
+    const x = 1.88 * Math.cos(angle);
+    const z = 1.88 * Math.sin(angle);
+    outerRingPoints.push(new THREE.Vector3(x, 0.06, z));
+  }
+  const outerRingGeo = new THREE.BufferGeometry().setFromPoints(outerRingPoints);
+  const outerRingMat = new THREE.LineBasicMaterial({ color: 0x22c55e, transparent: true, opacity: 0.22 });
+  const outerRingObj = new THREE.LineLoop(outerRingGeo, outerRingMat);
+  scene.add(outerRingObj);
+  
+  /* ── FLOATING PARTICLES ── */
+  const dustCount = 600;
+  const dustGeo = new THREE.BufferGeometry();
+  const dustPositions = [];
+  for (let i = 0; i < dustCount; i++) {
+    const rad = ORBIT_R + (Math.random() - 0.5) * 0.3;
+    const ang = Math.random() * Math.PI * 2;
+    const yOff = (Math.random() - 0.5) * 0.4;
+    dustPositions.push(rad * Math.cos(ang), yOff, rad * Math.sin(ang));
+  }
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(dustPositions), 3));
+  const dustMatP = new THREE.PointsMaterial({ color: 0x88aaff, size: 0.005, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
+  const dustPoints = new THREE.Points(dustGeo, dustMatP);
+  scene.add(dustPoints);
+
+  /* ── HTML LABELS for nodes ── */
+  const labelEls = [];
+  NODE_DEFS.forEach(def=>{
+    const el = document.createElement('div');
+    el.className = 'node-label';
+    el.innerHTML = `${def.icon} ${def.label}`;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click',()=>{
+      document.querySelector(def.section).scrollIntoView({behavior:'smooth'});
+    });
+    container.style.position='relative';
+    container.appendChild(el);
+    labelEls.push(el);
+  });
+
+  /* ── Mouse parallax for interactive feel ── */
+  let targetX=0, targetY=0;
+  if(!isMobile){
+    document.addEventListener('mousemove',e=>{
+      targetX = (e.clientX/window.innerWidth  - .5) * 0.3;
+      targetY = (e.clientY/window.innerHeight - .5) * 0.3;
+    });
+  }
+
+  /* ── Raycaster for node clicks ── */
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  renderer.domElement.addEventListener('click', e=>{
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(nodeMeshes, true);
+    if(hits.length){
+      let obj = hits[0].object;
+      while(obj.parent && !obj.userData.section) obj = obj.parent;
+      if(obj.userData && obj.userData.section)
+        document.querySelector(obj.userData.section).scrollIntoView({behavior:'smooth'});
+    }
+  });
+  renderer.domElement.style.cursor = 'pointer';
+
+  /* ── Resize handler ── */
+  function onResize(){
+    const s = Math.min(container.clientWidth || 480, isMobile ? 300 : 500);
+    renderer.setSize(s, s);
+  }
+  window.addEventListener('resize', onResize, {passive:true});
+
+  /* ── Project 3D to 2D for labels ── */
+  const projVec = new THREE.Vector3();
+  function projectToScreen(pos3, el){
+    projVec.copy(pos3);
+    projVec.project(camera);
+    const rect = renderer.domElement.getBoundingClientRect();
+    const xPx = (projVec.x + 1) / 2 * rect.width;
+    const yPx = (1 - projVec.y) / 2 * rect.height;
+    el.style.left = xPx + 'px';
+    el.style.top = yPx + 'px';
+    el.style.transform = 'translate(-50%, -110%)';
+    el.style.opacity = projVec.z < 1 ? '1' : '0';
+  }
+
+  /* ── ANIMATION LOOP ── */
+  let t = 0;
+  
+  function animate(){
+    requestAnimationFrame(animate);
+    t += 0.014;
+    
+    // Rotate Earth and clouds
+    earthMesh.rotation.y = t * 0.2;
+    cloudsMesh.rotation.y = t * 0.22;  // clouds drift slightly faster
+    stars.rotation.y = t * 0.05;
+    atmosphere.rotation.y = t * 0.1;
+    outerGlow.rotation.y = t * 0.08;
+    
+    // Update orbiting nodes positions
+    nodeMeshes.forEach((mesh, i)=>{
+      const baseAngle = NODE_DEFS[i].angle;
+      const angle = baseAngle + t * 0.55;
+      mesh.position.x = ORBIT_R * Math.cos(angle);
+      mesh.position.y = ORBIT_R * Math.sin(angle) * Math.sin(ORBIT_TILT);
+      mesh.position.z = ORBIT_R * Math.sin(angle) * Math.cos(ORBIT_TILT);
+      
+      // Pulse scale effect
+      const s = 1 + 0.15 * Math.sin(t * 3 + i);
+      mesh.scale.set(s, s, s);
+      
+      // Update HTML label position
+      const worldPos = mesh.position.clone().applyMatrix4(nodeGroup.matrixWorld);
+      projectToScreen(worldPos, labelEls[i]);
+    });
+    
+    // Parallax camera movement
+    if(!isMobile){
+      camera.position.x += (targetX * 0.12 - camera.position.x) * 0.05;
+      camera.position.y += (-targetY * 0.1 - camera.position.y) * 0.05;
+      camera.lookAt(0, 0, 0);
+    }
+    
+    // Rotate orbit rings
+    orbitRing.rotation.y += 0.0015;
+    outerRingObj.rotation.x += 0.001;
+    dustPoints.rotation.y += 0.001;
+    
+    renderer.render(scene, camera);
+  }
+  
+  animate();
+})();
+</script>
+</body>
+</html>
