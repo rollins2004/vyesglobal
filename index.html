@@ -991,22 +991,40 @@ footer {
 
       <!-- Emblem -->
       <div class="vg-emblem-wrap reveal-r">
-        <div class="vg-ring-outer">
-          <div class="vg-ring-inner">
-            <div class="vg-letters">VG</div>
-            <div class="vg-tagword">V Yes Global</div>
-          </div>
-        </div>
-        <p style="text-align:center;color:var(--text-muted);font-size:14px;max-width:260px;line-height:1.75">
-          Empowering individuals &amp; businesses with trusted financial, creative, and digital solutions.
-        </p>
+  <div class="vg-ring-outer">
+    <div class="vg-ring-inner">
+      <img id="emblem-logo-img" src="images/logo.png" alt="VG Logo" 
+           style="display:none; width:80%; height:80%; object-fit:contain; border-radius:50%;">
+      
+      <div id="emblem-logo-text">
+        <div class="vg-letters">VG</div>
+        <div class="vg-tagword">V Yes Global</div>
       </div>
-
     </div>
   </div>
-</section>
+  <p style="text-align:center;color:var(--text-muted);font-size:14px;max-width:260px;line-height:1.75; margin-top:28px;">
+    Empowering individuals &amp; businesses with trusted financial, creative, and digital solutions.
+  </p>
+</div>
 
-<div class="section-divider"></div>
+<script>
+  (function() {
+    const emblemImg = document.getElementById('emblem-logo-img');
+    const emblemText = document.getElementById('emblem-logo-text');
+
+    // Check if the logo image loads successfully
+    emblemImg.onload = function() {
+      emblemImg.style.display = 'block';
+      emblemText.style.display = 'none';
+    };
+
+    // If it fails (file not found), keep the VG text
+    emblemImg.onerror = function() {
+      emblemImg.style.display = 'none';
+      emblemText.style.display = 'block';
+    };
+  })();
+</script>
 
 <!-- ══════════════════════════════════════
      CONTACT
