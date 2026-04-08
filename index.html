@@ -1012,14 +1012,22 @@ footer {
     const emblemImg = document.getElementById('emblem-logo-img');
     const emblemText = document.getElementById('emblem-logo-text');
 
-    // Check if the logo image loads successfully
-    emblemImg.onload = function() {
+    function showImage() {
       emblemImg.style.display = 'block';
       emblemText.style.display = 'none';
-    };
+    }
 
-    // If it fails (file not found), keep the VG text
+    // 1. If the image is already cached/loaded
+    if (emblemImg.complete && emblemImg.naturalHeight !== 0) {
+      showImage();
+    }
+
+    // 2. Standard load event
+    emblemImg.onload = showImage;
+
+    // 3. Handle errors
     emblemImg.onerror = function() {
+      console.log("Logo not found at: " + emblemImg.src);
       emblemImg.style.display = 'none';
       emblemText.style.display = 'block';
     };
